@@ -10,16 +10,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model TechTag {
-  id        String   @id @default(uuid())
-  name      String
-  Project   Project? @relation(fields: [projectId], references: [id])
-  projectId String?
+model User {
+  id       String    @id @default(uuid())
+  name     String
+  summary  String
+  Projects Project[]
+}
+
+model Tech {
+  name     String    @id
+  Projects Project[]
 }
 
 model Project {
-  id          String    @id @default(uuid())
+  id          String         @id @default(uuid())
   title       String
   description String
-  techStack   TechTag[]
+  year        Int
+  techStack   Tech[]
+  User        User[]
+  links       ProjectLinks[]
+}
+
+model ProjectLinks {
+  id           String   @id @default(uuid())
+  repositories String[]
+  demos        String[]
+  Project      Project? @relation(fields: [projectId], references: [id])
+  projectId    String?
 }
