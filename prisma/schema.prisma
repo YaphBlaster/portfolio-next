@@ -28,8 +28,8 @@ model Project {
   description String
   year        Int
   techStack   Tech[]
-  User        User[]
   links       ProjectLinks[]
+  User        User[]
 }
 
 model ProjectLinks {

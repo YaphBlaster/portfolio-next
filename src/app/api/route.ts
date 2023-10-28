@@ -1,16 +1,17 @@
 import db from "@/lib/db";
+import { User } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
   const firstUser = await db.user.findFirst({
     include: {
       Projects: {
-        include: { techStack: true, User: true },
+        include: {
+          techStack: true,
+          links: true,
+        },
       },
     },
   });
-  console.log("🚀 ~ file: route.ts:6 ~ GET ~ firstUser:", firstUser);
   return NextResponse.json({ data: firstUser });
 };
-
-export const POST = (request: Request) => {};
