@@ -1,10 +1,8 @@
 import ThemeToggle from "@/components/ThemeToggle";
-import Image from "next/image";
+import User from "@/components/User";
 import db from "@/lib/db";
-import { NextResponse } from "next/server";
-import { useQuery } from "@tanstack/react-query";
 
-const getData = async () => {
+export const getUserData = async () => {
   return await db.user.findFirst({
     include: {
       Projects: {
@@ -18,13 +16,16 @@ const getData = async () => {
 };
 
 export default async function Home() {
-  const data = await getData();
+  const data = await getUserData();
+
+  if (!data) return;
 
   return (
     <div>
       <ThemeToggle />
       <div>Nav bar</div>
       <div>Image?</div>
+      <User user={data} />
       <div>{data?.summary}</div>
       <div>Skills</div>
       <div>Projects</div>
