@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+export function AppProviders({ children, ...props }: ThemeProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <NextThemesProvider {...props}>{children}</NextThemesProvider>
