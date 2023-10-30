@@ -1,11 +1,11 @@
 import ThemeToggle from "@/components/ThemeToggle";
-import User from "@/components/User";
+import Portfolio from "@/components/Portfolio";
 import db from "@/lib/db";
 
-export const getUserData = async () => {
-  return await db.user.findFirst({
+export const getPageOwnerData = async () => {
+  return await db.pageOwner.findFirstOrThrow({
     include: {
-      Projects: {
+      projects: {
         include: {
           links: true,
           techStack: true,
@@ -16,7 +16,7 @@ export const getUserData = async () => {
 };
 
 export default async function Home() {
-  const data = await getUserData();
+  const data = await getPageOwnerData();
 
   if (!data) return;
 
@@ -24,12 +24,12 @@ export default async function Home() {
     <div>
       <ThemeToggle />
       <div>Nav bar</div>
-      <div>Image?</div>
-      <User user={data} />
-      <div>{data?.summary}</div>
+      {/* <div>Image?</div> */}
+      <Portfolio pageOwner={data} />
+      {/* <div>{data?.summary}</div>
       <div>Skills</div>
       <div>Projects</div>
-      <div>Contact Me</div>
+      <div>Contact Me</div> */}
     </div>
   );
 }

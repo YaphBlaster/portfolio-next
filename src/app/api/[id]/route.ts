@@ -5,7 +5,7 @@ export const GET = async (
   request: Request,
   { params }: { params: { id: string } }
 ) => {
-  const user = await db.user.findUniqueOrThrow({
+  const user = await db.pageOwner.findUniqueOrThrow({
     where: {
       id: params.id,
     },
