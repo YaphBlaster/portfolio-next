@@ -1,24 +1,41 @@
-"use client";
+// "use client";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import Portfolio from "@/components/Portfolio";
+import db, { dbUtils } from "@/lib/db";
 
-const getPageOwnerById = async (id: string) => {
-  return (await fetch(`/api/pageOwner/${id}`)).json();
+export const getPageOwnerById = async ({ id }: { id: string }) => {
+  return await db.pageOwner.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      projects: {
+        include: {
+          links: true,
+          techStack: true,
+        },
+      },
+    },
+  });
 };
 
 type Props = {};
 
-const PageOwnerPage = ({ params }: { params: { id: string } }) => {
-  const { data } = useQuery({
-    queryKey: ["user", params.id],
-    queryFn: () => getPageOwnerById(params.id),
-  });
+const PageOwnerPage = async ({
+  params: { id },
+}: {
+  params: { id: string };
+}) => {
+  const data = await dbUtils.getPageOwner({ id });
+
+  if (!data) return;
+
   return (
     <div>
       <Portfolio pageOwner={data} />
-      <div>{params.id}</div>
-      <div>{data?.name}</div>
+      {/* <div>{params.id}</div> */}
+      {/* <div>{data?.name}</div> */}
     </div>
   );
 };

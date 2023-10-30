@@ -1,6 +1,6 @@
 import ThemeToggle from "@/components/ThemeToggle";
 import Portfolio from "@/components/Portfolio";
-import db from "@/lib/db";
+import db, { dbUtils } from "@/lib/db";
 
 export const getPageOwnerData = async () => {
   return await db.pageOwner.findFirstOrThrow({
@@ -16,7 +16,7 @@ export const getPageOwnerData = async () => {
 };
 
 export default async function Home() {
-  const data = await getPageOwnerData();
+  const data = await dbUtils.getPageOwner({});
 
   if (!data) return;
 

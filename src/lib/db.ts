@@ -10,4 +10,27 @@ if (process.env.NODE_ENV === "production") {
   }
   prisma = global.prisma;
 }
+
 export default prisma;
+
+export const getPageOwner = async ({ id }: { id?: string }) => {
+  const query = {
+    where: { id },
+    include: {
+      projects: {
+        include: {
+          links: true,
+          techStack: true,
+        },
+      },
+    },
+  };
+  if (id) {
+    return await prisma.pageOwner.findUniqueOrThrow(query);
+  }
+  return await prisma.pageOwner.findFirstOrThrow(query);
+};
+
+export const dbUtils = {
+  getPageOwner,
+};

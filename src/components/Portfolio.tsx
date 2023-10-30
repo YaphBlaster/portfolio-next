@@ -1,8 +1,8 @@
-import { getPageOwnerData } from "@/app/page";
+import { dbUtils } from "@/lib/db";
 import React from "react";
 
 type Props = {
-  pageOwner: Awaited<ReturnType<typeof getPageOwnerData>>;
+  pageOwner: Awaited<ReturnType<typeof dbUtils.getPageOwner>>;
 };
 
 const Portfolio = ({ pageOwner }: Props) => {
