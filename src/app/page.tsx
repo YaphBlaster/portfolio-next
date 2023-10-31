@@ -1,19 +1,6 @@
 import ThemeToggle from "@/components/ThemeToggle";
 import Portfolio from "@/components/Portfolio";
-import db, { dbUtils } from "@/lib/db";
-
-export const getPageOwnerData = async () => {
-  return await db.pageOwner.findFirstOrThrow({
-    include: {
-      projects: {
-        include: {
-          links: true,
-          techStack: true,
-        },
-      },
-    },
-  });
-};
+import { dbUtils } from "@/lib/db";
 
 export default async function Home() {
   const data = await dbUtils.getPageOwner({});
@@ -25,7 +12,7 @@ export default async function Home() {
       <ThemeToggle />
       <div>Nav bar</div>
       {/* <div>Image?</div> */}
-      <Portfolio pageOwner={data} />
+      <Portfolio />
       {/* <div>{data?.summary}</div>
       <div>Skills</div>
       <div>Projects</div>

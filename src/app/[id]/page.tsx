@@ -27,13 +27,9 @@ const PageOwnerPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const data = await dbUtils.getPageOwner({ id });
-
-  if (!data) return;
-
   return (
     <div>
-      <Portfolio pageOwner={data} />
+      <Portfolio pageOwnerId={id} />
       {/* <div>{params.id}</div> */}
       {/* <div>{data?.name}</div> */}
     </div>
