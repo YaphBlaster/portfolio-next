@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import * as icons from "simple-icons";
 import { useQueryClient } from "@tanstack/react-query";
+import AdminForm from "./AdminForm";
 
 type Props = {};
 
@@ -27,6 +28,7 @@ const AdminSheet = (props: Props) => {
         <SheetHeader>
           <SheetTitle>Edit Data</SheetTitle>
           <SheetDescription>Update all your info here!</SheetDescription>
+          <AdminForm />
         </SheetHeader>
       </SheetContent>
     </Sheet>
