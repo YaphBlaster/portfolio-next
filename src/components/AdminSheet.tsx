@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import {
   Sheet,
   SheetContent,
@@ -7,20 +8,25 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import * as icons from "simple-icons";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {};
 
 const AdminSheet = (props: Props) => {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.setQueryData(["techIcons"], () => icons);
+  }, [queryClient]);
+
   return (
     <Sheet>
       <SheetTrigger>Open</SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-          <SheetDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </SheetDescription>
+          <SheetTitle>Edit Data</SheetTitle>
+          <SheetDescription>Update all your info here!</SheetDescription>
         </SheetHeader>
       </SheetContent>
     </Sheet>
