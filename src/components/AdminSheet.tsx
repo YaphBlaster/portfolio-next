@@ -11,15 +11,19 @@ import {
 import * as icons from "simple-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import AdminForm from "./AdminForm";
+import { PageOwnerFullType } from "@/lib/db";
 
-type Props = {};
+type Props = {
+  pageOwnerData: PageOwnerFullType;
+};
 
-const AdminSheet = (props: Props) => {
+const AdminSheet = ({ pageOwnerData }: Props) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
     queryClient.setQueryData(["techIcons"], () => icons);
-  }, [queryClient]);
+    queryClient.setQueryData(["pageOwnerData"], () => pageOwnerData);
+  }, [pageOwnerData, queryClient]);
 
   return (
     <Sheet>

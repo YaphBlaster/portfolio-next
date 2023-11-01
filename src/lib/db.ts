@@ -46,7 +46,10 @@ export const getPageOwner = async ({ id }: { id?: string }) => {
   if (id) {
     return await prisma.pageOwner.findUniqueOrThrow(query);
   }
-  return await prisma.pageOwner.findFirstOrThrow(query);
+  return await prisma.pageOwner.findFirst({
+    ...query,
+    where: { isDefaultOwner: true },
+  });
 };
 
 export const dbUtils = {

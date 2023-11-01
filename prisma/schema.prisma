@@ -11,15 +11,18 @@ datasource db {
 }
 
 model PageOwner {
-  id       String    @id @default(uuid())
-  name     String
-  summary  String
-  projects Project[]
+  id             String    @id @default(uuid())
+  name           String
+  summary        String
+  skills         String[]
+  projects       Project[]
+  isDefaultOwner Boolean   @default(false)
 }
 
 model Tech {
-  name     String    @id
-  projects Project[]
+  name        String    @id
+  projects    Project[]
+  pageOwnerId String?
 }
 
 model Project {
