@@ -7,12 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ProjectFullType } from "@/lib/db";
+import { _ProjectFullType } from "@/lib/actions";
 import { siReact } from "simple-icons";
 import TechIcon from "./TechIcon";
 
 type Props = {
-  project: ProjectFullType;
+  project: _ProjectFullType;
 };
 const ProjectCard = ({ project }: Props) => {
   const { links, description, title, year, techStack } = project;
@@ -23,7 +23,6 @@ const ProjectCard = ({ project }: Props) => {
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <TechIcon path={siReact.path} />
         <p>{description}</p>
       </CardContent>
       <CardFooter>

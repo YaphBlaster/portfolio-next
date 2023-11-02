@@ -14,14 +14,21 @@ model PageOwner {
   id             String    @id @default(uuid())
   name           String
   summary        String
-  skills         String[]
+  skills         Tech[]
   projects       Project[]
   isDefaultOwner Boolean   @default(false)
 }
 
 model Tech {
-  name        String    @id
-  projects    Project[]
+  title       String
+  slug        String      @id
+  svg         String
+  path        String
+  source      String
+  hex         String
+  Project     Project[]
+  projectId   String?
+  PageOwner   PageOwner[]
   pageOwnerId String?
 }
 

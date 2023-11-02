@@ -11,24 +11,33 @@ import {
 import * as icons from "simple-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import AdminForm from "./AdminForm";
-import { PageOwnerFullType } from "@/lib/db";
+import { _PageOwnerFullType } from "@/lib/actions";
 
 type Props = {
-  pageOwnerData: PageOwnerFullType;
+  pageOwnerData: _PageOwnerFullType;
 };
 
 const AdminSheet = ({ pageOwnerData }: Props) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    queryClient.setQueryData(["techIcons"], () => icons);
     queryClient.setQueryData(["pageOwnerData"], () => pageOwnerData);
   }, [pageOwnerData, queryClient]);
+
+  useEffect(() => {
+    const convertedIcons: Record<string, icons.SimpleIcon> = {};
+
+    Object.entries(icons).forEach(
+      ([iconKey, iconInfo]) =>
+        (convertedIcons[iconKey.toLowerCase()] = iconInfo)
+    );
+    queryClient.setQueryData(["techIcons"], () => convertedIcons);
+  }, [queryClient]);
 
   return (
     <Sheet>
       <SheetTrigger>Open</SheetTrigger>
-      <SheetContent>
+      <SheetContent className={"overflow-y-scroll"}>
         <SheetHeader>
           <SheetTitle>Edit Data</SheetTitle>
           <SheetDescription>Update all your info here!</SheetDescription>

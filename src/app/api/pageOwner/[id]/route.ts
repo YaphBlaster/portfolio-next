@@ -1,5 +1,5 @@
 import { AdminFormType } from "@/components/AdminForm";
-import db, { PageOwnerFullType } from "@/lib/db";
+import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
@@ -21,7 +21,6 @@ export const PATCH = async (
   { params: { id } }: { params: { id: string } }
 ) => {
   const { name, summary, skills } = (await request.json()) as AdminFormType;
-  console.log("🚀 ~ file: route.ts:23 ~ id:", id);
 
   const updatedPageOwner = await prisma.pageOwner.update({
     where: { id },
@@ -41,8 +40,10 @@ export const PATCH = async (
     },
   });
 
-  revalidatePath("/");
-  revalidatePath(`/${id}`);
+  revalidatePath("/(main)/[[...id]]/page", "page");
+
+  // revalidatePath("/", "page");
+  // revalidatePath(`/${id}`, "page");
 
   return NextResponse.json({ ...updatedPageOwner });
 };

@@ -16,49 +16,53 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { PageOwnerFullType } from "@/lib/db";
+import { _PageOwnerFullType, updatePageOwner } from "@/lib/actions";
 import { useQueryClient } from "@tanstack/react-query";
 import { MultiSelect } from "./ui/multi-select";
-import { revalidatePath } from "next/cache";
+import { SimpleIcon } from "simple-icons";
 
 const formSchema = z.object({
   name: z.string().min(1),
   summary: z.string().min(1),
   skills: z.array(z.string()).min(1),
-  isDefaultOwner: z.boolean(),
 });
 
 export type AdminFormType = z.infer<typeof formSchema>;
-
-type TechIconType = {
-  title: string;
-  slug: string;
-  svg: string;
-  path: string;
-  source: string;
-  hex: string;
-};
 
 type Props = {};
 
 const AdminForm = ({}: Props) => {
   const queryClient = useQueryClient();
-  const formData = queryClient.getQueryData([
+  const { name, summary, id, skills } = queryClient.getQueryData([
     "pageOwnerData",
-  ]) as PageOwnerFullType;
+  ]) as _PageOwnerFullType;
 
-  const techIcons = queryClient.getQueryData(["techIcons"]) as TechIconType[];
+  const techIcons = queryClient.getQueryData(["techIcons"]) as Record<
+    string,
+    SimpleIcon
+  >;
 
   const form = useForm<AdminFormType>({
     defaultValues: {
-      ...formData,
+      name,
+      summary,
+      skills: skills.map((skill) => skill.slug),
     },
     resolver: zodResolver(formSchema),
   });
   const onSubmit: SubmitHandler<AdminFormType> = async (data) => {
-    await fetch(`/api/pageOwner/${formData.id}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
+    const purifiedSkills = data.skills.map((skill) => {
+      const key = `si${skill}`;
+      const tech = techIcons[key];
+      return {
+        ...tech,
+      };
+    });
+
+    await updatePageOwner({
+      formData: data,
+      purifiedSkills,
+      pageOwnerId: id,
     });
   };
 
@@ -76,7 +80,7 @@ const AdminForm = ({}: Props) => {
                   <Input placeholder="shadcn" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your public display name.
+                  What&apos;s your nombre hombre?
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -92,7 +96,7 @@ const AdminForm = ({}: Props) => {
                   <Input placeholder="shadcn" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is your public display name.
+                  What would you say you do here?
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -103,7 +107,7 @@ const AdminForm = ({}: Props) => {
             name="skills"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Summary</FormLabel>
+                <FormLabel>Skills</FormLabel>
                 <FormControl>
                   <MultiSelect
                     selected={field.value}
@@ -117,9 +121,7 @@ const AdminForm = ({}: Props) => {
                     className="sm:w-[510px]"
                   />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
+                <FormDescription>Showoff time 🥳</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -127,7 +129,7 @@ const AdminForm = ({}: Props) => {
           <Button type="submit">Submit</Button>
         </form>
       </Form>
-      <DevTool control={form.control} /> {/* set up the dev tool */}
+      <DevTool control={form.control} />
     </>
   );
 };
