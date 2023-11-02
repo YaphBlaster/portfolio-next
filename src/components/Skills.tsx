@@ -1,5 +1,6 @@
 import { Tech } from "@prisma/client";
 import React from "react";
+import TechIcon from "./TechIcon";
 
 type Props = {
   skills: Tech[];
@@ -7,20 +8,11 @@ type Props = {
 
 const Skills = ({ skills }: Props) => {
   return (
-    <>
-      test
+    <div className="flex gap-2">
       {skills.map((skill) => {
-        const { path, slug, title } = skill;
-        return (
-          <div key={slug}>
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <path d={path} />
-            </svg>
-            {title}
-          </div>
-        );
+        return <TechIcon techInfo={skill} key={skill.slug} />;
       })}
-    </>
+    </div>
   );
 };
 
