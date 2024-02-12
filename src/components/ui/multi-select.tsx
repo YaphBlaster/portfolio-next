@@ -99,7 +99,6 @@ function MultiSelect({
                 <CommandItem
                   key={option.value}
                   onSelect={() => {
-                    console.log("option :>> ", option);
                     onChange(
                       selected.includes(option.value)
                         ? selected.filter((item) => item !== option.value)

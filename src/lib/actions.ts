@@ -4,6 +4,11 @@ import { prisma as prismaInstance } from "./db";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { SimpleIcon } from "simple-icons";
+import { ProjectFormType } from "@/components/ProjectForm";
+
+const revalidateContent = () => {
+  revalidatePath("/(main)/[[...id]]", "page");
+};
 
 export type _PageOwnerFullType = Prisma.PageOwnerGetPayload<{
   include: {
@@ -71,7 +76,54 @@ export const updatePageOwner = async ({
     },
   });
 
-  revalidatePath("/(main)/[[...id]]", "page");
+  revalidateContent();
+};
+
+export const addProject = async ({
+  formData,
+  pageOwnerId,
+}: {
+  formData: ProjectFormType;
+  purifiedSkills: SimpleIcon[];
+  pageOwnerId: string;
+}) => {
+  const { description, title, year } = formData;
+
+  const projectData: Prisma.ProjectCreateInput = {
+    title,
+    description,
+    year,
+  };
+
+  await prisma.project.create({
+    data: {
+      ...projectData,
+      pageOwners: {
+        connect: {
+          id: pageOwnerId,
+        },
+      },
+    },
+  });
+
+  revalidateContent();
+};
+
+export const getOwner = async ({ id }: { id?: string }) => {
+  const query: Prisma.PageOwnerFindUniqueOrThrowArgs = {
+    where: { id },
+    include: {
+      skills: true,
+      projects: {
+        include: {
+          links: true,
+          techStack: true,
+        },
+      },
+    },
+  };
+
+  return await prismaInstance.pageOwner.findUniqueOrThrow(query);
 };
 
 export const getPageOwner = async ({ id }: { id?: string }) => {

@@ -1,10 +1,8 @@
 import { _PageOwnerFullType } from "@/lib/actions";
 import React from "react";
-import ProjectCard from "./ProjectCard";
 import AdminSheet from "./AdminSheet";
 import Skills from "./Skills";
-import TechIcon from "./TechIcon";
-import Image from "next/image";
+import Projects from "./Projects";
 
 type Props = {
   pageOwnerId?: string;
@@ -21,9 +19,7 @@ const Portfolio = async ({ data, pageOwnerId }: Props) => {
         </div>
         <Skills skills={data.skills} />
         <p className="leading-7 [&:not(:first-child)]:mt-6">{data?.summary}</p>
-        {data.projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+        <Projects data={data.projects} />
       </div>
     </>
   );

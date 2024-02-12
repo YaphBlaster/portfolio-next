@@ -11,12 +11,22 @@ datasource db {
 }
 
 model PageOwner {
-  id             String    @id @default(uuid())
+  id             String       @id @default(uuid())
   name           String
   summary        String
   skills         Tech[]
   projects       Project[]
-  isDefaultOwner Boolean   @default(false)
+  isDefaultOwner Boolean      @default(false)
+  contactInfo    ContactInfo?
+}
+
+model ContactInfo {
+  id          String    @id @default(uuid())
+  github      String
+  email       String
+  linkedIn    String
+  PageOwner   PageOwner @relation(fields: [pageOwnerId], references: [id])
+  pageOwnerId String    @unique
 }
 
 model Tech {

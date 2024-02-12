@@ -14,7 +14,6 @@ const PageOwnerPage = async ({
   const data = (await getPageOwner({
     id: pulledValue,
   })) as _PageOwnerFullType;
-  console.log("🚀 ~ file: page.tsx:17 ~ data:", data);
 
   if (!data) return;
 

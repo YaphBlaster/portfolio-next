@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 import { v4 as uuidv4 } from "uuid";
 
 async function main() {
-  await prisma.pageOwner.upsert({
+  const pageOwner = await prisma.pageOwner.upsert({
     where: { id: uuidv4() },
     update: {},
     create: {
@@ -13,22 +13,27 @@ async function main() {
     },
   });
 
-  await prisma.projectLink.upsert({
-    where: { id: uuidv4() },
-    update: {},
-    create: {
-      demos: ["https://www.youtube.com/watch?v=E9lGHy3dBO0"],
-      repositories: ["https://github.com/YaphBlaster"],
+  await prisma.contactInfo.create({
+    data: {
+      email: "yaphet.abraha@gmail.com",
+      linkedIn: "https://www.linkedin.com/in/yaphet-abraha/",
+      github: "https://github.com/YaphBlaster",
+      pageOwnerId: pageOwner.id,
     },
   });
 
-  await prisma.project.upsert({
-    where: { id: uuidv4() },
-    update: {},
-    create: {
+  await prisma.project.create({
+    data: {
       title: "Test Title",
       description: "Test Description",
       year: 2020,
+    },
+  });
+
+  await prisma.projectLink.create({
+    data: {
+      demos: ["https://www.youtube.com/watch?v=E9lGHy3dBO0"],
+      repositories: ["https://github.com/YaphBlaster"],
     },
   });
 }

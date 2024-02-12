@@ -21,7 +21,7 @@ const AdminSheet = ({ pageOwnerData }: Props) => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    queryClient.setQueryData(["pageOwnerData"], () => pageOwnerData);
+    queryClient.setQueryData(["pageOwnerData"], () => pageOwnerData, {});
   }, [pageOwnerData, queryClient]);
 
   useEffect(() => {
